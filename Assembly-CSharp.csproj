@@ -162,8 +162,11 @@
      <Compile Include="Assets\NGUI\Scripts\UI\UITiledSprite.cs" />
      <Compile Include="Assets\NGUI\Scripts\UI\UITooltip.cs" />
      <Compile Include="Assets\NGUI\Scripts\UI\UIViewport.cs" />
+     <Compile Include="Assets\Parafall Assets\Scripts\DestroyParachute.cs" />
+     <Compile Include="Assets\Parafall Assets\Scripts\MoveTextWithParachute.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\NumberClick.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\NumberTouch.cs" />
+     <Compile Include="Assets\Parafall Assets\Scripts\ParachuteSpawner.cs" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Multiply Culled.shader" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Miscellaneous Shaders\Mobile Background.shader" />
