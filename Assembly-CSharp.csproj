@@ -167,6 +167,7 @@
      <Compile Include="Assets\Parafall Assets\Scripts\NumberClick.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\NumberTouch.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\ParachuteSpawner.cs" />
+     <Compile Include="Assets\Parafall Assets\Scripts\ParafallObjectPool.cs" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Multiply Culled.shader" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Miscellaneous Shaders\Mobile Background.shader" />

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ParachuteSpawner : MonoBehaviour {
 
@@ -34,6 +35,7 @@ public class ParachuteSpawner : MonoBehaviour {
 		Debug.Log("tempGO nomalized position y : "  + tempGONormalizedPosition.y);
 		tempGONormalizedPosition.y = tempGONormalizedPosition.y + 10F;
 		childGuiTextObj.transform.position =  tempGONormalizedPosition;*/
+
 	}
 
 }
