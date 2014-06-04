@@ -17,6 +17,28 @@ public class ParafallObjectPool : MonoBehaviour {
 
 	public bool growToFillObjectPool = false;
 
+	private static ParafallObjectPool instance;
+
+	public static ParafallObjectPool Instance {
+		get {
+			if(null == instance){
+				GameObject parafallObjectPoolGO = new GameObject("ParafallObjectPool");
+				instance = parafallObjectPoolGO.AddComponent<ParafallObjectPool>();
+
+				DontDestroyOnLoad(parafallObjectPoolGO);
+			}
+
+			return instance;
+		}
+	}
+
+	void Awake(){
+		if(null != instance)
+			DestroyImmediate(gameObject);
+		else
+			instance = this;
+	}
+
 	void Start(){
 		if(initialPoolSize > 0){
 			if(null != targetObjectToPreInstantiate){
@@ -45,6 +67,7 @@ public class ParafallObjectPool : MonoBehaviour {
 
 	public GameObject getObjectFromPool(string objectType){
 		GameObject goToReturn = null;
+
 		if(dictOfObjectsInPool.ContainsKey(objectType)){
 			List<GameObject> tempGOs = dictOfObjectsInPool[objectType];
 			foreach(GameObject tempGO in tempGOs){
@@ -54,6 +77,23 @@ public class ParafallObjectPool : MonoBehaviour {
 				}
 			}
 		}
+
+		if(null == goToReturn && growToFillObjectPool && dictOfObjectsInPool.Keys.Count < maxPoolSize)
+		{
+			GameObject tempGO = (GameObject)Instantiate (targetObjectToPreInstantiate);
+			tempGO.SetActive(false);
+			if(dictOfObjectsInPool.ContainsKey(objectTypeToPreInstantiate)){
+				dictOfObjectsInPool[objectTypeToPreInstantiate].Add(tempGO);
+			}else{
+				List<GameObject> tempGOList = new List<GameObject>();
+				tempGOList.Add(tempGO);
+				dictOfObjectsInPool.Add (objectTypeToPreInstantiate, tempGOList);
+			}
+
+			goToReturn = tempGO;
+		}
+
+		goToReturn.SetActive(true);
 		return goToReturn;
 	}
 

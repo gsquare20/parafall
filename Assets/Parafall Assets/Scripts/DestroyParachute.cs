@@ -3,9 +3,11 @@ using System.Collections;
 
 public class DestroyParachute : MonoBehaviour {
 
+	private ParafallObjectPool parafallObjectPool;
+
 	// Use this for initialization
 	void Start () {
-	
+		parafallObjectPool = ParafallObjectPool.Instance;
 	}
 	
 	// Update is called once per frame
@@ -14,6 +16,7 @@ public class DestroyParachute : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
-		Destroy(collision.gameObject);
+		//Destroy(collision.gameObject);
+		parafallObjectPool.putObjectBackToPool(collision.gameObject);
 	}
 }

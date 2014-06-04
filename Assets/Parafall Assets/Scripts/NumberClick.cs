@@ -12,7 +12,17 @@ public class NumberClick : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if(Input.touchCount == 0){
+			Vector2 touchLocation = Input.GetTouch (0).position;
+			TouchPhase touchPhase = Input.GetTouch (0).phase;
+			if(touchPhase.Equals(TouchPhase.Began)){
+				Ray r = Camera.main.ScreenPointToRay(touchLocation);
+				RaycastHit hitInfo;
+				if(Physics.Raycast(r, out hitInfo)){
+					hitInfo.collider.gameObject.SendMessage("OnMouseDown");
+				}
+			}
+		}
 	}
 
 	void OnMouseDown() {
@@ -26,4 +36,6 @@ public class NumberClick : MonoBehaviour {
 		testGuiText.text = "Mouse up on " + this.name;
 		this.guiText.color = Color.white;
 	}
+
+
 }

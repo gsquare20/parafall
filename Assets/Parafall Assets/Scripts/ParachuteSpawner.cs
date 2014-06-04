@@ -12,9 +12,14 @@ public class ParachuteSpawner : MonoBehaviour {
 
 	private Transform myTransform;
 
+	private ParafallObjectPool parafallObjectPool;
+
+	public string objectTypeToPreInstantiate = "parachute";
+	
 	// Use this for initialization
 	void Start () {
 		myTransform = this.transform;
+		parafallObjectPool = ParafallObjectPool.Instance;
 		InvokeRepeating("spawnParachute", firstInvokeTime, spawnRate);
 	}
 	
@@ -24,8 +29,12 @@ public class ParachuteSpawner : MonoBehaviour {
 	}
 
 	void spawnParachute() {
-		GameObject tempGO = (GameObject)Instantiate (parachuteGO, myTransform.position, myTransform.rotation);
+		//GameObject tempGO = (GameObject)Instantiate (parachuteGO, myTransform.position, myTransform.rotation);
 
+		//TODO : Need to call ParafallObjectPool's static method to spawn a new parachute game object or to make it active
+		GameObject tempGO = parafallObjectPool.getObjectFromPool(objectTypeToPreInstantiate);
+		tempGO.transform.position = myTransform.position;
+		tempGO.transform.rotation = myTransform.rotation;
 		GUIText childGuiTextObj = tempGO.transform.GetChild (0).guiText;
 		float randomNum = Random.Range (0F, 1000F);
 		int randomInt = (int)randomNum;
