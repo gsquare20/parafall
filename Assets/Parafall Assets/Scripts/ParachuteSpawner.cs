@@ -14,7 +14,7 @@ public class ParachuteSpawner : MonoBehaviour {
 
 	private ParafallObjectPool parafallObjectPool;
 
-	public string objectTypeToPreInstantiate = "parachute";
+	private string objectTypeToPreInstantiate = "parachute";
 	
 	// Use this for initialization
 	void Start () {
