@@ -1,12 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Parafall Assets\Scripts\NumberClick.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Parafall Assets\Scripts\StateManager.cs">
     <Files>
       <File FileName="Assets\Parafall Assets\Scripts\ParafallObjectPool.cs" Line="1" Column="1" />
       <File FileName="Assets\Parafall Assets\Scripts\ParachuteSpawner.cs" Line="1" Column="1" />
-      <File FileName="Assets\Parafall Assets\Scripts\InputManager.cs" Line="63" Column="23" />
+      <File FileName="Assets\Parafall Assets\Scripts\InputManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Parafall Assets\Scripts\GameData.cs" Line="1" Column="1" />
-      <File FileName="Assets\Parafall Assets\Scripts\ParafallObjectPool.cs" Line="39" Column="20" />
       <File FileName="Assets\Parafall Assets\Scripts\NumberClick.cs" Line="10" Column="36" />
       <File FileName="Assets\Parafall Assets\Scripts\DestroyParachute.cs" Line="1" Column="1" />
       <File FileName="Assets\Parafall Assets\Scripts\MoveTextWithParachute.cs" Line="1" Column="1" />
