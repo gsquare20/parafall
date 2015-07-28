@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class InputManager : MonoBehaviour {
 
-	private static string inputString;
+	private string inputString;
 
 	private string objectTypeToPreInstantiate = "parachute";
 
@@ -46,22 +46,24 @@ public class InputManager : MonoBehaviour {
 		return inputString;
 	}
 
-	public bool findAndGrab(){
-		List<GameObject> pooledGO = ParafallObjectPool.Instance.getObjectsOfType(objectTypeToPreInstantiate);
-		foreach(GameObject tempGO in pooledGO){
-			if(tempGO.activeSelf == true){
-				GUIText childGuiTextObj = tempGO.transform.GetChild (0).guiText;
-				//Debug.Log (childGuiTextObj.text);
-				//Debug.Log ("input string : " + inputString);
-				if(inputString.Equals(childGuiTextObj.text)){
-					ParafallObjectPool.Instance.putObjectBackToPool(tempGO);
-					resetInputString ();
-					return true;
+	public ParaPacket findAndGrab(){
+		foreach(ParaPacket paraPacket in parafallObjectPool.listOfPackets){
+			List<GameObject> pooledGO = ParafallObjectPool.Instance.getObjectsOfType(paraPacket.paraName);
+			foreach(GameObject tempGO in pooledGO){
+				if(tempGO.activeSelf == true){
+					GUIText childGuiTextObj = tempGO.transform.GetChild (0).guiText;
+					//Debug.Log (childGuiTextObj.text);
+					//Debug.Log ("input string : " + inputString);
+					if(inputString.Equals(childGuiTextObj.text)){
+						parafallObjectPool.putObjectBackToPool(tempGO);
+						resetInputString ();
+						return paraPacket;
+					}
 				}
 			}
 		}
 		resetInputString ();
-		return false;
+		return null;
 	}
 
 	public void resetInputString(){

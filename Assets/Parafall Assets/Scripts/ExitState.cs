@@ -10,5 +10,6 @@ public class ExitState : IGameState {
 	}
 
 	public void executeStateRelatedTasks(){
+		Application.Quit ();
 	}
 }

@@ -48,11 +48,11 @@ public class NumberClick : MonoBehaviour {
 		if(guiText.text == "GRAB")
 		{
 			Debug.Log ("Grab button clicked.");
-			bool isObjFound = inputManager.findAndGrab();
-			if(isObjFound)
-				testGuiText.text = "FOUND";
-			else
-				testGuiText.text = "NOT FOUND";
+//			bool isObjFound = inputManager.findAndGrab();
+//			if(isObjFound)
+//				testGuiText.text = "FOUND";
+//			else
+//				testGuiText.text = "NOT FOUND";
 		}
 
 	}
