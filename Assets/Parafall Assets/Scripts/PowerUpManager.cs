@@ -47,13 +47,10 @@ public class PowerUpManager : MonoBehaviour {
 	}
 
 	void Awake(){
-		if(null == instance){
-			instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-		else
+		if(null != instance)
 			DestroyImmediate(gameObject);
-
+		else
+			instance = this;
 	}
 
 	// Use this for initialization
@@ -119,6 +116,7 @@ public class PowerUpManager : MonoBehaviour {
 	}
 
 	public void openPowerUpMenu(){
+		refreshPowerUpValuesOnMenuOpen ();
 		powerUpMenu.SetActive (true);
 		Time.timeScale = 0;
 	}
@@ -158,7 +156,7 @@ public class PowerUpManager : MonoBehaviour {
 	}
 
 	private void decrementPowerUpCount(string powerUpType){
-		gameData.setPowerUps(powerUpType, gameData.getPowerUpCount(powerUpType) - 1);
+		gameData.setPowerUps(powerUpType, gameData.getPowerUpCount(powerUpType) - 1, true);
 	}
 
 	void updatePowerUpValueInMenu(string powerUpType, int powerUpValue){
@@ -171,6 +169,15 @@ public class PowerUpManager : MonoBehaviour {
 				break;
 			}
 		}
+	}
+
+	void refreshPowerUpValuesOnMenuOpen(){
+		Dictionary<string, int> tempDictOfPowerUps = gameData.getPowerUps ();
+		Dictionary<string, int> tempPowerUpsDict = new Dictionary<string, int> (tempDictOfPowerUps);
+		foreach (string key in tempPowerUpsDict.Keys) {
+			gameData.setPowerUps (key, tempDictOfPowerUps[key], true);		
+		}
+		tempPowerUpsDict = null;
 	}
 
 }

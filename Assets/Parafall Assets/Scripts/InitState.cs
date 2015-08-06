@@ -15,6 +15,8 @@ public class InitState : IGameState {
 
 		myStateManager.pauseMenu.SetActive (false);
 
+		myStateManager.optionsMenu.SetActive (false);
+
 		Time.timeScale = 0;
 	}
 }

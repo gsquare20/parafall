@@ -1,8 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Parafall Assets\Scripts\PowerUpManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Parafall Assets\Scripts\SVGImporter.cs">
     <Files>
-      <File FileName="Assets\Parafall Assets\Scripts\PowerUpManager.cs" Line="61" Column="85" />
+      <File FileName="Assets\Parafall Assets\Scripts\SVGImporter.cs" Line="66" Column="6" />
+      <File FileName="Assets\Parafall Assets\Scripts\HSBColor.cs" Line="3" Column="26" />
+      <File FileName="Assets\Parafall Assets\Scripts\Triangulator.cs" Line="1" Column="19" />
+      <File FileName="Assets\Parafall Assets\Scripts\HexConverter.cs" Line="4" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

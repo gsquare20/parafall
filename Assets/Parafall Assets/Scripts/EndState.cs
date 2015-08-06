@@ -11,5 +11,7 @@ public class EndState : IGameState {
 
 	public void executeStateRelatedTasks(){
 		//TODO : Show End state menu showing final score, coins and social share options.
+		Time.timeScale = 0;
+		myStateManager.endMenu.SetActive (true);
 	}
 }

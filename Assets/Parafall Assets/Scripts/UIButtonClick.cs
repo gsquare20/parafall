@@ -57,7 +57,7 @@ public class UIButtonClick : MonoBehaviour {
 					string paraPacketName = paraPacket.paraName;
 					string paraPacketTrimmedName = paraPacketName.Substring(0, paraPacketName.IndexOf("packet"));
 					//Debug.Log ("para packet trimmed name : " + paraPacketTrimmedName);
-					gameData.setPowerUps(paraPacketTrimmedName, gameData.getPowerUpCount(paraPacketTrimmedName) + 1);
+					gameData.setPowerUps(paraPacketTrimmedName, gameData.getPowerUpCount(paraPacketTrimmedName) + 1, true);
 				}
 			}
 			else{

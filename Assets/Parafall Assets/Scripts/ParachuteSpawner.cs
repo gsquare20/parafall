@@ -29,17 +29,19 @@ public class ParachuteSpawner : MonoBehaviour {
 	void OnEnable(){
 		ParafallEventManager.playerScoreAndParachuteSpeedEvent += setParachuteFallSpeed;
 		StateManager.startSpawningParaPacketsEvent += startSpawning;
+		StateManager.initStateEvent += stopCoroutineToSpawnParaPackets;
 	}
 
 	void OnDisable() {
 		ParafallEventManager.playerScoreAndParachuteSpeedEvent -= setParachuteFallSpeed;
 		StateManager.startSpawningParaPacketsEvent -= startSpawning;
+		StateManager.initStateEvent -= stopCoroutineToSpawnParaPackets;
 	}
 
 	void startSpawning(){
 //		foreach (ParaPacket paraPacket in parafallObjectPool.listOfPackets) {
 			//StartCoroutine (initialWaitBeforeSpawningParaPackets());
-			StartCoroutine(startSpawningParaPackets());		
+			StartCoroutine("startSpawningParaPackets");		
 //		}
 		//InvokeRepeating("spawnParachute", firstInvokeTime, spawnRate);
 	}
@@ -70,6 +72,7 @@ public class ParachuteSpawner : MonoBehaviour {
 		yield return new WaitForSeconds (firstInvokeTime);
 		while (true) {
 			spawnParachute();
+			//Debug.Log ("Spawn Rate : " + spawnRate);
 			yield return new WaitForSeconds(spawnRate);
 		}
 	}
@@ -81,6 +84,10 @@ public class ParachuteSpawner : MonoBehaviour {
 	void setParachuteFallSpeed(float fallSpeed){
 		//Debug.Log ("Fall Speed increased to 200");
 		this.fallSpeed = fallSpeed;
+	}
+
+	void stopCoroutineToSpawnParaPackets(){
+		StopCoroutine ("startSpawningParaPackets");
 	}
 
 

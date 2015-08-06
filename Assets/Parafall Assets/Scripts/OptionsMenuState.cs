@@ -10,6 +10,7 @@ public class OptionsMenuState : IGameState {
 	}
 
 	public void executeStateRelatedTasks(){
-		//TODO : Need to open options dialog.
+		myStateManager.optionsMenu.SetActive (true);
+		myStateManager.mainMenu.SetActive (false);
 	}
 }

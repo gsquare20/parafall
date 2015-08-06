@@ -16,6 +16,7 @@ public class StartState : IGameState {
 	public void executeStateRelatedTasks(){
 		Time.timeScale = 1;
 		myStateManager.mainMenu.SetActive (false);
+		myStateManager.endMenu.SetActive (false);
 
 		IGameState lastState = myStateManager.getLastState ();
 		if (null != lastState && (lastState.GetType() == typeof(InitState))) {
@@ -31,6 +32,9 @@ public class StartState : IGameState {
 
 			//Reset coins count
 			gameData.setCoinsCount(0);
+		}
+		else{
+
 		}
 	}
 }

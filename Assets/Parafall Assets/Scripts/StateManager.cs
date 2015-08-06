@@ -14,10 +14,20 @@ public class StateManager : MonoBehaviour {
 
 	public GameObject pauseMenu;
 
+	public GameObject endMenu;
+
+	public GameObject optionsMenu;
+
 	private Dictionary<int, IGameState> gameStatesDict = new Dictionary<int, IGameState>();
 
 	public delegate void StartSpawningParaPacketsAction ();
 	public static event StartSpawningParaPacketsAction startSpawningParaPacketsEvent;
+
+	public delegate void InitStateAction ();
+	public static event InitStateAction initStateEvent;
+
+	public delegate void EndStateAction ();
+	public static event EndStateAction endStateEvent;
 
 	public enum GameStateEnum {
 		InitState,
@@ -30,13 +40,19 @@ public class StateManager : MonoBehaviour {
 	}
 
 	void Awake(){
-		if(null == instance){
-			instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-		else
+		if(null != instance)
 			DestroyImmediate(gameObject);
+		else
+			instance = this;
 
+	}
+
+	void OnEnable(){
+		GameData.playerHealthChangeEvent += moveToEndStateBasedOnPlayerHealth;	
+	}
+
+	void OnDisable() {
+		GameData.playerHealthChangeEvent -= moveToEndStateBasedOnPlayerHealth;
 	}
 
 	// Use this for initialization
@@ -87,6 +103,13 @@ public class StateManager : MonoBehaviour {
 		switchState (getGameState(GameStateEnum.PauseState));
 	}
 
+	public void endGame(){
+		endStateEvent ();
+
+		setLastState ();
+		switchState (getGameState (GameStateEnum.EndState));
+	}
+
 	public void exitGame(){
 		setLastState ();
 		//switchState (new ExitState (this));
@@ -106,6 +129,8 @@ public class StateManager : MonoBehaviour {
 	}
 
 	public void goBackToMainMenu() {
+		initStateEvent ();
+
 		setLastState ();
 		//switchState (new InitState (this));
 		switchState (getGameState(GameStateEnum.InitState));
@@ -122,5 +147,11 @@ public class StateManager : MonoBehaviour {
 	public IGameState getGameState(GameStateEnum gameStateEnum){
 		int state = (int)gameStateEnum;
 		return gameStatesDict[state];
+	}
+
+	void moveToEndStateBasedOnPlayerHealth(float playerHealth){
+		if (playerHealth == 0f) {
+			endGame ();		
+		}
 	}
 }

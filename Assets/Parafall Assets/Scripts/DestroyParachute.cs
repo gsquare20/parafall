@@ -20,9 +20,13 @@ public class DestroyParachute : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision) {
 		//Destroy(collision.gameObject);
+		Transform collisionGOTransform = collision.gameObject.transform;
 		parafallObjectPool.putObjectBackToPool(collision.gameObject);
 
-		//Decrease player Health to 1
-		gameData.setPlayerHealth (gameData.getPlayerHealth () -1f);
+		float transformX = Mathf.Round (collisionGOTransform.position.x);
+		//Debug.Log ("Collision GO transform x : " + transformX);
+		if(transformX == 0f || transformX == 10f || transformX == -10f)
+			//Decrease player Health to 1
+			gameData.setPlayerHealth (gameData.getPlayerHealth () - 1f);
 	}
 }
