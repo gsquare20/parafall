@@ -68,4 +68,13 @@ public class PlayerController : MonoBehaviour {
 	void setHighestScoreText (int playerHighestScore){
 		endMenuHighestScoreText.text = playerHighestScore.ToString ();
 	}
+
+	public void toggleSoundInGame(){
+		if(AudioListener.volume == 0f)
+			AudioListener.volume = 1f;
+		else
+			AudioListener.volume = 0f;
+
+		Debug.Log ("Audio Listener volume : " + AudioListener.volume);
+	}
 }

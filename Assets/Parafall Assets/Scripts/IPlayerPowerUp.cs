@@ -3,6 +3,6 @@ using System.Collections;
 
 public interface IPlayerPowerUp {
 
-	void executePowerUpRelatedTasks();
+	void executePowerUpRelatedTasks(GameObject powerUpSlider);
 
 }

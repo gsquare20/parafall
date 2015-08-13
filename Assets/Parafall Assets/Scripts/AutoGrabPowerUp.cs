@@ -18,7 +18,7 @@ public class AutoGrabPowerUp : IPlayerPowerUp
 		this.powerUpManager = powerUpManager;	
 	}
 
-	public void executePowerUpRelatedTasks(){
+	public void executePowerUpRelatedTasks(GameObject powerUpSlider){
 		Debug.Log ("Auto Grab power up used.");
 	}
 }

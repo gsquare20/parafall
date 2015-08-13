@@ -1,11 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Parafall Assets\Scripts\SVGImporter.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Parafall Assets\Scripts\PowerUpManager.cs">
     <Files>
-      <File FileName="Assets\Parafall Assets\Scripts\SVGImporter.cs" Line="66" Column="6" />
-      <File FileName="Assets\Parafall Assets\Scripts\HSBColor.cs" Line="3" Column="26" />
-      <File FileName="Assets\Parafall Assets\Scripts\Triangulator.cs" Line="1" Column="19" />
-      <File FileName="Assets\Parafall Assets\Scripts\HexConverter.cs" Line="4" Column="26" />
+      <File FileName="Assets\Parafall Assets\Scripts\GrabParachute.cs" Line="25" Column="60" />
+      <File FileName="Assets\Parafall Assets\Scripts\ParachuteSpawner.cs" Line="128" Column="33" />
+      <File FileName="Assets\Parafall Assets\Scripts\PowerUpManager.cs" Line="11" Column="28" />
+      <File FileName="Assets\Parafall Assets\Scripts\GameData.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

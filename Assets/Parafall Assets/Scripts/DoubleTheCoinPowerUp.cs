@@ -9,6 +9,8 @@
 //------------------------------------------------------------------------------
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using System;
 
 public class DoubleTheCoinPowerUp : IPlayerPowerUp
 {
@@ -18,9 +20,11 @@ public class DoubleTheCoinPowerUp : IPlayerPowerUp
 		this.powerUpManager = powerUpManager;	
 	}
 
-	public void executePowerUpRelatedTasks(){
+	public void executePowerUpRelatedTasks(GameObject powerUpSlider){
+
 		Debug.Log ("Double the coin power up used.");
 	}
+
 }
 
 

@@ -12,5 +12,6 @@ public class PauseState : IGameState {
 	public void executeStateRelatedTasks(){
 		Time.timeScale = 0;
 		myStateManager.pauseMenu.SetActive (true);
+		AdManager.Instance.showInterstitialAd ();
 	}
 }

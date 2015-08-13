@@ -18,7 +18,7 @@ public class LiveAgainPowerUp : IPlayerPowerUp
 		this.powerUpManager = powerUpManager;	
 	}
 
-	public void executePowerUpRelatedTasks(){
+	public void executePowerUpRelatedTasks(GameObject powerUpSlider){
 	}
 }
 

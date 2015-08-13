@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using System;
+
 
 public class DoubleTheScorePowerUp : IPlayerPowerUp
 {
@@ -18,9 +21,12 @@ public class DoubleTheScorePowerUp : IPlayerPowerUp
 		this.powerUpManager = powerUpManager;	
 	}
 
-	public void executePowerUpRelatedTasks(){
+	public void executePowerUpRelatedTasks(GameObject powerUpSlider){
+
 		Debug.Log ("Double the score power up used.");
 	}
+
+
 }
 
 

@@ -14,6 +14,10 @@ public class ParachuteSpawner : MonoBehaviour {
 
 	private ParafallObjectPool parafallObjectPool;
 
+	private float powerUpToken = 1f;
+		
+	public GameObject goToGrabAll;
+
 	// Use this for initialization
 	void Start () {
 		myTransform = this.transform;
@@ -30,12 +34,16 @@ public class ParachuteSpawner : MonoBehaviour {
 		ParafallEventManager.playerScoreAndParachuteSpeedEvent += setParachuteFallSpeed;
 		StateManager.startSpawningParaPacketsEvent += startSpawning;
 		StateManager.initStateEvent += stopCoroutineToSpawnParaPackets;
+		PowerUpManager.powerUpInUseEvent += powerUpInUse;
+		PowerUpManager.powerUpNotInUseEvent += powerUpNotInUse;
 	}
 
 	void OnDisable() {
 		ParafallEventManager.playerScoreAndParachuteSpeedEvent -= setParachuteFallSpeed;
 		StateManager.startSpawningParaPacketsEvent -= startSpawning;
 		StateManager.initStateEvent -= stopCoroutineToSpawnParaPackets;
+		PowerUpManager.powerUpInUseEvent -= powerUpInUse;
+		PowerUpManager.powerUpNotInUseEvent -= powerUpNotInUse;
 	}
 
 	void startSpawning(){
@@ -59,7 +67,10 @@ public class ParachuteSpawner : MonoBehaviour {
 			int randomInt = (int)randomNum;
 			//Debug.Log ("Generated random number : " + randomInt.ToString());
 			childGuiTextObj.text = randomInt.ToString ();
-			tempGO.transform.rigidbody2D.AddForce (-Vector2.up * fallSpeed, ForceMode2D.Force);
+			tempGO.transform.rigidbody2D.velocity = new Vector2(0f, -(fallSpeed/powerUpToken));
+			//tempGO.transform.rigidbody2D.AddForce (-Vector2.up * (fallSpeed/powerUpToken), ForceMode2D.Force);
+			//StartCoroutine("waitFor5Seconds", tempGO.transform.rigidbody2D);
+
 			/*Vector3 tempGONormalizedPosition = Camera.mainCamera.WorldToViewportPoint(tempGO.transform.position);
 			Debug.Log("tempGO nomalized position y : "  + tempGONormalizedPosition.y);
 			tempGONormalizedPosition.y = tempGONormalizedPosition.y + 10F;
@@ -81,6 +92,15 @@ public class ParachuteSpawner : MonoBehaviour {
 		yield return new WaitForSeconds (firstInvokeTime);
 	}
 
+	IEnumerator waitFor5Seconds(Rigidbody2D parachuteRigidbody){
+		yield return new WaitForSeconds (5f);
+		powerUpToken = 2f;
+		parachuteRigidbody.velocity = new Vector2 (0f, -(fallSpeed / powerUpToken));
+		yield return new WaitForSeconds (5f);
+		powerUpToken = 1f;
+		parachuteRigidbody.velocity = new Vector2 (0f, -(fallSpeed / powerUpToken));
+	}
+
 	void setParachuteFallSpeed(float fallSpeed){
 		//Debug.Log ("Fall Speed increased to 200");
 		this.fallSpeed = fallSpeed;
@@ -90,5 +110,34 @@ public class ParachuteSpawner : MonoBehaviour {
 		StopCoroutine ("startSpawningParaPackets");
 	}
 
+	void powerUpInUse(string powerUpName){
+		if (powerUpName.Equals ("slowdownfallpowerup")){
+			powerUpToken = 2f;
+			toggleParaPacketsSpeed();
+		}
+
+		if (powerUpName.Equals ("graballpowerup")){
+			goToGrabAll.SetActive (true);
+			powerUpToken = .5f;
+			toggleParaPacketsSpeed();
+		}
+	}
+	
+	void powerUpNotInUse(){
+		powerUpToken = 1f;
+		goToGrabAll.SetActive (false);
+		toggleParaPacketsSpeed ();
+	}
+
+	void toggleParaPacketsSpeed(){
+		string[] packetsArr = new string[] {"foodpacket", "coinpacket"};
+		foreach (string packet in packetsArr) {
+			List<GameObject> packetsList = parafallObjectPool.getObjectsOfType(packet);
+			foreach(GameObject packetGO in packetsList){
+				if(packetGO.activeSelf)
+					packetGO.rigidbody2D.velocity = new Vector2(0f, -(fallSpeed / powerUpToken));
+			}
+		}
+	}
 
 }

@@ -10,11 +10,23 @@ public class UIButtonClick : MonoBehaviour {
 
 	private GameData gameData;
 
+	private int powerUpToken = 1;
+
 	void Start () {
 		//parafallObjectPool = ParafallObjectPool.Instance;
 		//inputManager = GameObject.Find ("GameManager").GetComponent<InputManager>();
 		inputManager = InputManager.Instance;
 		gameData = GameData.Instance;
+	}
+
+	void OnEnable(){
+		PowerUpManager.powerUpInUseEvent += powerUpInUse;
+		PowerUpManager.powerUpNotInUseEvent += powerUpNotInUse;
+	}
+
+	void OnDisable(){
+		PowerUpManager.powerUpInUseEvent -= powerUpInUse;
+		PowerUpManager.powerUpNotInUseEvent -= powerUpNotInUse;
 	}
 
 	public void onButtonClick(string buttonText){
@@ -37,11 +49,11 @@ public class UIButtonClick : MonoBehaviour {
 				testText.text = "FOUND";
 				//Increment player Score by 1
 				if(paraPacket.paraName.Equals("foodpacket"))
-					gameData.setPlayerScore(gameData.getPlayerScore() + 1);
+					gameData.setPlayerScore(gameData.getPlayerScore() + (powerUpToken * 1));
 
 				//Increment coins count by 10
 				if(paraPacket.paraName.Equals("coinpacket"))
-					gameData.setCoinsCount(gameData.getCoinsCount() + 10);
+					gameData.setCoinsCount(gameData.getCoinsCount() + (powerUpToken * 10));
 
 				//Increment player health by 5
 				if(paraPacket.paraName.Equals("healthpacket"))
@@ -65,5 +77,14 @@ public class UIButtonClick : MonoBehaviour {
 
 			}
 		}
+	}
+
+	void powerUpInUse(string powerUpName){
+		if (powerUpName.Equals ("doublethescorepowerup") || powerUpName.Equals ("doublethecoinpowerup"))
+			powerUpToken = 2;
+	}
+
+	void powerUpNotInUse(){
+		powerUpToken = 1;
 	}
 }

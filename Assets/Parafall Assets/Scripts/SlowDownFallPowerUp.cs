@@ -18,7 +18,7 @@ public class SlowDownFallPowerUp : IPlayerPowerUp
 		this.powerUpManager = powerUpManager;	
 	}
 
-	public void executePowerUpRelatedTasks(){
+	public void executePowerUpRelatedTasks(GameObject powerUpSlider){
 		Debug.Log ("Slow down fall power up used.");
 	}
 }

@@ -39,6 +39,14 @@ public class PowerUpManager : MonoBehaviour {
 
 	private GameData gameData;
 
+	public GameObject powerUpSlider;
+
+	public delegate void PowerUpInUseAction (string powerUpName);
+	public static event PowerUpInUseAction powerUpInUseEvent;
+
+	public delegate void PowerUpNotInUseAction ();
+	public static event PowerUpNotInUseAction powerUpNotInUseEvent;
+
 	public enum PowerUpEnum {
 		DoubleTheCoinPowerUp,
 		DoubleTheScorePowerUp,
@@ -132,31 +140,61 @@ public class PowerUpManager : MonoBehaviour {
 	}
 
 	public void useDoubleTheCoinPowerUp(){
-		decrementPowerUpCount ("doublethecoinpowerup");
+		int powerUpCount = decrementPowerUpCount ("doublethecoinpowerup");
 		closePowerUpMenu ();
-		getPowerUp (PowerUpEnum.DoubleTheCoinPowerUp).executePowerUpRelatedTasks ();
+
+		if(powerUpCount >= 0){
+			getPowerUp (PowerUpEnum.DoubleTheCoinPowerUp).executePowerUpRelatedTasks (powerUpSlider);
+			activatePowerUpSliderToValue (30f);
+			powerUpInUseEvent("doublethecoinpowerup");
+			InvokeRepeating ("waitForASecond", 1f, 1f);
+		}
+
 	}
 
 	public void useDoubleTheScorePowerUp(){
-		decrementPowerUpCount ("doublethescorepowerup");
+		int powerUpCount = decrementPowerUpCount ("doublethescorepowerup");
 		closePowerUpMenu ();
-		getPowerUp (PowerUpEnum.DoubleTheScorePowerUp).executePowerUpRelatedTasks ();
+
+		if(powerUpCount >= 0){
+			getPowerUp (PowerUpEnum.DoubleTheScorePowerUp).executePowerUpRelatedTasks (powerUpSlider);
+			activatePowerUpSliderToValue (10f);
+			powerUpInUseEvent("doublethescorepowerup");
+			InvokeRepeating ("waitForASecond", 1f, 1f);
+		}
+
 	}
 
 	public void useSlowDownFallPowerUp(){
-		decrementPowerUpCount ("slowdownfallpowerup");
+		int powerUpCount = decrementPowerUpCount ("slowdownfallpowerup");
 		closePowerUpMenu ();
-		getPowerUp (PowerUpEnum.SlowDownFallPowerUp).executePowerUpRelatedTasks ();
+
+		if(powerUpCount >= 0){
+			getPowerUp (PowerUpEnum.SlowDownFallPowerUp).executePowerUpRelatedTasks (powerUpSlider);
+			activatePowerUpSliderToValue (10f);
+			powerUpInUseEvent("slowdownfallpowerup");
+			InvokeRepeating ("waitForASecond", 1f, 1f);
+		}
+
 	}
 
 	public void useAutoGrabPowerUp(){
-		decrementPowerUpCount ("graballpowerup");
+		int powerUpCount = decrementPowerUpCount ("graballpowerup");
 		closePowerUpMenu ();
-		getPowerUp (PowerUpEnum.AutoGrabPowerUp).executePowerUpRelatedTasks ();
+
+		if(powerUpCount >= 0){
+			getPowerUp (PowerUpEnum.AutoGrabPowerUp).executePowerUpRelatedTasks (powerUpSlider);
+			activatePowerUpSliderToValue (10f);
+			powerUpInUseEvent("graballpowerup");
+			InvokeRepeating ("waitForASecond", 1f, 1f);
+		}
+
 	}
 
-	private void decrementPowerUpCount(string powerUpType){
-		gameData.setPowerUps(powerUpType, gameData.getPowerUpCount(powerUpType) - 1, true);
+	private int decrementPowerUpCount(string powerUpType){
+		int powerUpCount = gameData.getPowerUpCount (powerUpType) - 1;
+		gameData.setPowerUps(powerUpType, powerUpCount, true);
+		return powerUpCount;
 	}
 
 	void updatePowerUpValueInMenu(string powerUpType, int powerUpValue){
@@ -180,4 +218,27 @@ public class PowerUpManager : MonoBehaviour {
 		tempPowerUpsDict = null;
 	}
 
+	void waitForASecond(){
+		Slider slider = powerUpSlider.GetComponent<Slider> ();
+		if (slider.value > 0f)
+			slider.value -= 1f;
+		if (slider.value == 0f){
+			powerUpSlider.SetActive (false);
+			CancelInvoke ("waitForASecond");
+			powerUpNotInUseEvent();
+		}
+
+	}
+
+
+	private void activatePowerUpSliderToValue(float sliderValue){
+		Slider slider = powerUpSlider.GetComponent<Slider> ();
+		slider.maxValue = sliderValue;
+		slider.value = sliderValue;
+		if (powerUpSlider.activeSelf){
+			CancelInvoke ("waitForASecond");
+			powerUpNotInUseEvent();
+		}
+		powerUpSlider.SetActive (true);
+	}
 }
