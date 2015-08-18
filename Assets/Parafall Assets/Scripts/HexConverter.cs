@@ -3,17 +3,17 @@ using System.Collections;
 
 public class HexConverter{
 
-	string getHex(float iDecimal){
+	public string getHex(float iDecimal){
 		return iDecimal.ToString("X");
 	}
 
-	int hexToInt(char hexchar){
+	public int hexToInt(char hexchar){
 		string hex = "";
 		hex += hexchar;
 		return int.Parse (hex, System.Globalization.NumberStyles.HexNumber);
 	}
 
-	string rGBtoHex(Color color){
+	public string rGBtoHex(Color color){
 		float red = color.r;
 		float green = color.g;
 		float blue = color.b;
@@ -30,7 +30,7 @@ public class HexConverter{
 		return hexA + hexB + hexC + hexD + hexE + hexF;
 	}
 
-	Color hexToRGB(char[] color){
+	public Color hexToRGB(char[] color){
 		float red = (hexToInt (color[1]) + hexToInt (color[0])) * 16.0f / 255;
 		float green = (hexToInt (color[3]) + hexToInt (color[2])) * 16.0f / 255;
 		float blue = (hexToInt (color[5]) + hexToInt (color[4])) * 16.0f / 255;

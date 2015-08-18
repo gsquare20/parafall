@@ -221,7 +221,7 @@
      <Compile Include="Assets\Parafall Assets\Scripts\SlowDownFallPowerUp.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\StartState.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\StateManager.cs" />
-     <Compile Include="Assets\Parafall Assets\Scripts\Triangulator.cs" />
+     <Compile Include="Assets\Parafall Assets\Scripts\Traingulator.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\UIButtonClick.cs" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Multiply Culled.shader" />
