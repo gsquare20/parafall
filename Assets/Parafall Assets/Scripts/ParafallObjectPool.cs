@@ -21,7 +21,7 @@ public class ParafallObjectPool : MonoBehaviour {
 
 	public List<ParaPacket> listOfPackets;
 
-	private int objectsSpawnedFromPool = 1;
+	private long objectsSpawnedFromPool = 1;
 
 	private static ParafallObjectPool instance;
 

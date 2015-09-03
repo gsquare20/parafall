@@ -79,7 +79,10 @@ public class StateManager : MonoBehaviour {
 			if(currentStateType == typeof(StartState) || currentStateType == typeof(ResumeState)){
 				pauseGame();
 			}
-			if(currentStateType == typeof(InitState) || currentStateType == typeof(PauseState)){
+			if(currentStateType == typeof(PauseState)){
+				resumeGame();
+			}
+			if(currentStateType == typeof(InitState)){
 				Application.Quit();	
 			}
 		}
