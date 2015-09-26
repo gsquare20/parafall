@@ -4,19 +4,41 @@ using UnityEngine.UI;
 
 public class UIButtonClick : MonoBehaviour {
 
-	public Text testText;
+	private PlayerController playerController;
 
 	private InputManager inputManager;
+
+	private static UIButtonClick instance;
 
 	private GameData gameData;
 
 	private int powerUpToken = 1;
+
+	private Text testText;
+
+	public static UIButtonClick Instance {
+		get{
+			if(null == instance){
+				instance = GameObject.Find ("Button 0").GetComponent<UIButtonClick>();
+			}
+			
+			return instance;
+		}
+	}
+
+	void Awake(){
+
+		instance = this;
+
+	}
 
 	void Start () {
 		//parafallObjectPool = ParafallObjectPool.Instance;
 		//inputManager = GameObject.Find ("GameManager").GetComponent<InputManager>();
 		inputManager = InputManager.Instance;
 		gameData = GameData.Instance;
+		playerController = PlayerController.Instance;
+		this.testText = playerController.testText;
 	}
 
 	void OnEnable(){
@@ -30,7 +52,7 @@ public class UIButtonClick : MonoBehaviour {
 	}
 
 	public void onButtonClick(string buttonText){
-		//Debug.Log (buttonText + " button clicked.");
+		Debug.Log (buttonText + " button clicked.");
 		if(!buttonText.Equals ("GRAB")){
 			if(testText.text.Equals("FOUND") || testText.text.Equals ("NOT FOUND"))
 				testText.text = buttonText;

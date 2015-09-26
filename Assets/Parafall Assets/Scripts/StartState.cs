@@ -9,6 +9,8 @@ public class StartState : IGameState {
 
 	private GameData gameData = GameData.Instance;
 
+	private InputManager inputManager = InputManager.Instance;
+
 	public StartState(StateManager stateManager){
 		myStateManager = stateManager;
 	}
@@ -32,6 +34,9 @@ public class StartState : IGameState {
 
 			//Reset coins count
 			gameData.setCoinsCount(0);
+
+			//Reset rule to None
+			inputManager.setRuleInAction("None");
 		}
 		else{
 

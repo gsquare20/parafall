@@ -28,8 +28,8 @@ public class PowerUpSpawner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//		if(null != spawnedGO)
-//			maintainDistanceWithOtherParaPacketsOfSameLane (spawnedGO);
+		if(null != spawnedGO && spawnedGO.gameObject.activeSelf)
+			maintainDistanceWithOtherParaPacketsOfSameLane (spawnedGO);
 	}
 
 	void OnEnable(){
@@ -68,7 +68,7 @@ public class PowerUpSpawner : MonoBehaviour {
 	}
 
 	void maintainDistanceWithOtherParaPacketsOfSameLane(Transform transform){
-		RaycastHit2D hit = Physics2D.Raycast (new Vector2(transform.position.x, transform.position.y-2.2F), -Vector2.up);
+		RaycastHit2D hit = Physics2D.Raycast (new Vector2(transform.position.x, transform.position.y-2.2f), -Vector2.up);
 		if (null != hit.collider) {
 			string hitGOName = hit.transform.gameObject.name;
 			//Debug.Log ("hit game object name : " + hit.transform.gameObject.name);
@@ -77,8 +77,8 @@ public class PowerUpSpawner : MonoBehaviour {
 			//hit.transform.Rotate(new Vector2(hit.transform.position.x+70, hit.transform.position.y));
 			float distance = Mathf.Abs(hit.point.y - transform.position.y);
 			//Debug.Log ("Distance between object and its hit is : " + distance);
-			if((hitGOName.Contains("powerup") || hitGOName.Contains("health")) && distance < 5){
-				transform.Translate(new Vector3(transform.position.x, transform.position.y + 4));
+			if((hitGOName.Contains("powerup") || hitGOName.Contains("health")) && distance < 5f){
+				transform.Translate(new Vector3(transform.position.x, transform.position.y + 6f, 0));
 			}
 		}
 

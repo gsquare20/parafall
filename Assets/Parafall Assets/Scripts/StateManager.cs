@@ -85,6 +85,9 @@ public class StateManager : MonoBehaviour {
 			if(currentStateType == typeof(InitState)){
 				Application.Quit();	
 			}
+			if(currentStateType == typeof(OptionsMenuState)){
+				goBackToMainMenu();	
+			}
 		}
 	}
 

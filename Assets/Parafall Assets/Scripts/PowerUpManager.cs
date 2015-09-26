@@ -115,7 +115,7 @@ public class PowerUpManager : MonoBehaviour {
 					case "doublethecoinpowerup":
 						powerUpButton.onClick.AddListener(() => useDoubleTheCoinPowerUp());
 						break;
-					
+
 				}
 			}
 		}

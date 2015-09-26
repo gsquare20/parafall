@@ -15,12 +15,12 @@ public class GrabParachute : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		Debug.Log ("");
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
 		//Destroy(collision.gameObject);
-		Transform collisionGOTransform = collision.gameObject.transform;
+		//Transform collisionGOTransform = collision.gameObject.transform;
 		parafallObjectPool.putObjectBackToPool(collision.gameObject);
 		gameData.setPlayerScore (gameData.getPlayerScore () + 1);
 	}

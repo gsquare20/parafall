@@ -8,7 +8,7 @@ public class ParachuteSpawner : MonoBehaviour {
 
 	public float firstInvokeTime = .5f;
 
-	public float fallSpeed = 100f;
+	public float fallSpeed = 1f;
 
 	private Transform myTransform;
 
@@ -31,7 +31,7 @@ public class ParachuteSpawner : MonoBehaviour {
 	}
 
 	void OnEnable(){
-		ParafallEventManager.playerScoreAndParachuteSpeedEvent += setParachuteFallSpeed;
+
 		StateManager.startSpawningParaPacketsEvent += startSpawning;
 		StateManager.initStateEvent += stopCoroutineToSpawnParaPackets;
 		PowerUpManager.powerUpInUseEvent += powerUpInUse;
@@ -39,7 +39,7 @@ public class ParachuteSpawner : MonoBehaviour {
 	}
 
 	void OnDisable() {
-		ParafallEventManager.playerScoreAndParachuteSpeedEvent -= setParachuteFallSpeed;
+
 		StateManager.startSpawningParaPacketsEvent -= startSpawning;
 		StateManager.initStateEvent -= stopCoroutineToSpawnParaPackets;
 		PowerUpManager.powerUpInUseEvent -= powerUpInUse;
@@ -118,7 +118,7 @@ public class ParachuteSpawner : MonoBehaviour {
 
 		if (powerUpName.Equals ("graballpowerup")){
 			goToGrabAll.SetActive (true);
-			powerUpToken = .5f;
+			powerUpToken = .4f;
 			toggleParaPacketsSpeed();
 		}
 	}
@@ -134,8 +134,14 @@ public class ParachuteSpawner : MonoBehaviour {
 		foreach (string packet in packetsArr) {
 			List<GameObject> packetsList = parafallObjectPool.getObjectsOfType(packet);
 			foreach(GameObject packetGO in packetsList){
-				if(packetGO.activeSelf)
+				if(packetGO.activeSelf){
 					packetGO.rigidbody2D.velocity = new Vector2(0f, -(fallSpeed / powerUpToken));
+					if(powerUpToken != 1f){
+						if(packetGO.transform.position.y < -2f){
+							packetGO.rigidbody2D.velocity = new Vector2(0f, 5f);
+						}
+					}
+				}
 			}
 		}
 	}

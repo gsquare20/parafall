@@ -18,7 +18,24 @@ public class PlayerController : MonoBehaviour {
 	
 	public Slider healthSlider;
 
+	public GameObject modalPanel;
+
+	public GameObject errorPopUp;
+
+	public GameObject defaultPopUp;
+
+	public Text errorMsgText;
+
+	public Text defaultMsgText;
+
+	public Text testText;
+
+	public GameObject shopAndBoostUpPopUp;
+
+	private static PlayerController instance;
+
 	void OnEnable() {
+		Debug.Log ("enabling playerScoreChangeEvent in player controller.");
 		GameData.playerScoreChangeEvent += setScoreText;
 		GameData.playerHealthChangeEvent += setHealthSlider;
 		GameData.coinsCountChangeEvent += setCoinsText;
@@ -34,18 +51,24 @@ public class PlayerController : MonoBehaviour {
 		GameData.playerHighestScoreChangeEvent -= setHighestScoreText;
 	}
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	public static PlayerController Instance {
+		get{
+			if(null == instance){
+				instance = GameObject.Find ("Player").GetComponent<PlayerController>();
+			}
+			
+			return instance;
+		}
 	}
 
+	// Use this for initialization
+	void Awake(){
+		instance = this;
+	}
+
+
 	void setScoreText(int playerScore){
-		//Debug.Log("set player score called.");
+		Debug.Log("set player score called.");
 		scoreText.text = playerScore.ToString ();
 		endMenuScoreText.text = playerScore.ToString ();
 	}
@@ -76,5 +99,45 @@ public class PlayerController : MonoBehaviour {
 			AudioListener.volume = 0f;
 
 		Debug.Log ("Audio Listener volume : " + AudioListener.volume);
+	}
+
+	public void showErrorPopUp(string errorMsg){
+		modalPanel.SetActive (true);
+		errorPopUp.SetActive (true);
+		errorMsgText.text = errorMsg;
+	}
+
+	public void hideErrorPopUp(){
+		modalPanel.SetActive (false);
+		errorPopUp.SetActive (false);
+	}
+
+	public void showDefaultPopUp(string msg){
+		modalPanel.SetActive (true);
+		defaultPopUp.SetActive (true);
+		defaultMsgText.text = msg;
+	}
+
+	public void hideDefaultPopUp(){
+		modalPanel.SetActive (false);
+		defaultPopUp.SetActive (false);
+	}
+
+	public void showShopAndBoostUpPopUp(string tabName){
+		modalPanel.SetActive (true);
+		shopAndBoostUpPopUp.SetActive (true);
+		switch(tabName){
+		case "shop":
+			shopAndBoostUpPopUp.transform.FindChild("Shop Sub Panel").SetAsLastSibling();
+			break;
+		case "boostup":
+			shopAndBoostUpPopUp.transform.FindChild("BoostUp Sub Panel").SetAsLastSibling();
+			break;
+		}
+	}
+
+	public void hideShopAndBoostUpPopUp(){
+		modalPanel.SetActive (false);
+		shopAndBoostUpPopUp.SetActive (false);
 	}
 }
