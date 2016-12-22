@@ -11,6 +11,7 @@ public class GameDataSerialized{
 	public int playerLastHighestScore;
 	public int playerTotalCoinsCount;
 	public int playerNoOfLives;
+	public int playerHealthBars;
 	public List<PlayerPowerUpSerialized> playerPowerUpList = new List<PlayerPowerUpSerialized>();
 }
 
@@ -38,11 +39,15 @@ public class GameData : MonoBehaviour {
 
 	private int playerCurrentLevel;
 
+	private int playerHealthBars;
+
 	private float playerHealth;
 
 	private static GameData instance;
 
 	private Dictionary<string, int> dictOfPowerUps = new Dictionary<string, int>();
+
+	private PlayerController playerController;
 
 	public delegate void PlayerScoreChangeAction (int score);
 	public static event PlayerScoreChangeAction playerScoreChangeEvent;
@@ -61,6 +66,12 @@ public class GameData : MonoBehaviour {
 
 	public delegate void TotalCoinsCountChangeAction (int count);
 	public static event TotalCoinsCountChangeAction totalCoinsCountChangeEvent;
+
+	public delegate void PlayerHealthBarsCountChangeAction (int count);
+	public static event PlayerHealthBarsCountChangeAction playerHealthBarsCountChangeEvent;
+
+	public delegate void PlayerNoOfLivesChangeAction (int count);
+	public static event PlayerNoOfLivesChangeAction playerNoOfLivesChangeEvent;
 	
 	public static GameData Instance {
 		get{
@@ -74,24 +85,27 @@ public class GameData : MonoBehaviour {
 
 	void OnEnable(){
 		StateManager.endStateEvent += setTotalCoinsAndHighestScoreOnGameEnd;
-		loadGameDataFromFile ();
+		PlayerController.loadGameDataEvent += loadGameDataFromFile;
+		PlayerController.liveAgainPowerUpUsedEvent += setPowerHealthToFull;
+		//loadGameDataFromFile ();
 	}
 
 	void OnDisable(){
 		StateManager.endStateEvent -= setTotalCoinsAndHighestScoreOnGameEnd;
+		PlayerController.loadGameDataEvent -= loadGameDataFromFile;
+		PlayerController.liveAgainPowerUpUsedEvent -= setPowerHealthToFull;
 		persistGameDataToFile ();
 	}
 
 	void Awake(){
-		if(null != instance)
-			DestroyImmediate(gameObject);
-		else
-			instance = this;
+
+		instance = this;
 	}
 
 	// Use this for initialization
 	void Start () {
 		setPlayerHealth (10f);
+		playerController = PlayerController.Instance;
 	}
 	
 	public void setPlayerScore(int score){
@@ -107,6 +121,15 @@ public class GameData : MonoBehaviour {
 		coinsCountChangeEvent (coinsCount);
 	}
 
+	public void setTotalCoinsCount(int count){
+		this.playerTotalCoinsCount = count;
+	}
+
+	public void setPlayerHealthBars(int count){
+		this.playerHealthBars = count;
+		playerHealthBarsCountChangeEvent (count);
+	}
+
 	public void setPlayerHealth(float health){
 		//Debug.Log ("Player Health : " + health);
 		if(health >= 0f){
@@ -117,6 +140,7 @@ public class GameData : MonoBehaviour {
 
 	public void setNoOfLives(int lives){
 		noOfLives = lives;
+		playerNoOfLivesChangeEvent (noOfLives);
 	}
 
 	public void setPlayerCurrentLevel(int currentLevel){
@@ -143,8 +167,16 @@ public class GameData : MonoBehaviour {
 		return this.noOfLives;
 	}
 
+	public int getTotalCoinsCount() {
+		return this.playerTotalCoinsCount;	
+	}
+
 	public int getScoreRequiredToClearCurrentLevel(){
 		return this.scoreRequiredToClearCurrentLevel;
+	}
+
+	public int getPlayerHealthBarsCount(){
+		return this.playerHealthBars;	
 	}
 
 	public void setPowerUps(string type, int noOfPowerUps, bool raiseEvent){
@@ -182,6 +214,8 @@ public class GameData : MonoBehaviour {
 
 			playerHighestScore = gameDataSerializedObj.playerLastHighestScore;
 			noOfLives = gameDataSerializedObj.playerNoOfLives;
+			playerHealthBars = gameDataSerializedObj.playerHealthBars;
+			playerHealthBarsCountChangeEvent(playerHealthBars);
 			playerTotalCoinsCount = gameDataSerializedObj.playerTotalCoinsCount;
 
 			foreach(PlayerPowerUpSerialized playerPowerUpSerialized in gameDataSerializedObj.playerPowerUpList){
@@ -202,6 +236,7 @@ public class GameData : MonoBehaviour {
 		GameDataSerialized gameDataSerializedObj = new GameDataSerialized ();
 		gameDataSerializedObj.playerLastHighestScore = playerHighestScore;
 		gameDataSerializedObj.playerNoOfLives = noOfLives;
+		gameDataSerializedObj.playerHealthBars = playerHealthBars;
 		gameDataSerializedObj.playerTotalCoinsCount = playerTotalCoinsCount;
 
 		foreach (string key in dictOfPowerUps.Keys) {
@@ -223,5 +258,22 @@ public class GameData : MonoBehaviour {
 
 		playerHighestScoreChangeEvent (playerHighestScore);
 		totalCoinsCountChangeEvent (playerTotalCoinsCount);
+	}
+
+	public void fillHealthBar(){
+		if (playerHealthBars > 0) {
+			setPlayerHealthBars(getPlayerHealthBarsCount() - 1);
+			if(playerHealth <= 5f)
+				setPlayerHealth (getPlayerHealth () + 5f);
+			else
+				setPlayerHealth(10f);
+		}else{
+			playerController.showDefaultPopUp("Not enough health bars to refill health!");
+		}
+	}
+
+	private void setPowerHealthToFull(){
+		setPlayerHealth (10f);
+		setNoOfLives (getNoOfLives () - 1);
 	}
 }

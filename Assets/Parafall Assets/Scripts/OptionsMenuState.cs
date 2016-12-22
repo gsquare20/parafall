@@ -12,5 +12,6 @@ public class OptionsMenuState : IGameState {
 	public void executeStateRelatedTasks(){
 		myStateManager.optionsMenu.SetActive (true);
 		myStateManager.mainMenu.SetActive (false);
+		myStateManager.pauseMenu.SetActive (false);
 	}
 }

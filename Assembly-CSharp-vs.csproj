@@ -99,6 +99,7 @@
      <Compile Include="Assets\Parafall Assets\Scripts\EndState.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\ExitState.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\FacebookAccessManager.cs" />
+     <Compile Include="Assets\Parafall Assets\Scripts\FirstInitState.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\GameData.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\GrabParachute.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\HSBColor.cs" />
@@ -119,6 +120,7 @@
      <Compile Include="Assets\Parafall Assets\Scripts\ParafallObjectPool.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\PauseState.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Parafall Assets\Scripts\PopUpState.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\PowerUpItemScript.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\PowerUpManager.cs" />
      <Compile Include="Assets\Parafall Assets\Scripts\PowerUpSpawner.cs" />

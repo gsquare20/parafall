@@ -108,6 +108,7 @@ public class ParafallEventManager : MonoBehaviour {
 		Time.timeScale = 0;
 		modalPanel.SetActive (true);
 		rulePopUp.SetActive (true);
+		AdManager.Instance.showInterstitialAd ();
 		string ruleValueStr = ruleValue.ToString ();
 		this.ruleValue.text = ruleValueStr;
 		this.ruleDesc.text = getRuleDetails (ruleValueStr).ruleDesc;
@@ -163,6 +164,8 @@ public class ParafallEventManager : MonoBehaviour {
 			//Debug.Log ("Is active self : " + rectTransform.gameObject.activeSelf);
 			rectTransform.gameObject.SetActive (true);		
 		}
+
+		gameButtonsHidden.transform.SetAsLastSibling ();
 
 		gameButtons.tag = "Game Buttons Hidden";
 		gameButtonsHidden.tag = "Game Buttons";

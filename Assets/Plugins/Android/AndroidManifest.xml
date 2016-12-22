@@ -22,7 +22,13 @@
     <activity android:name="com.facebook.unity.FBUnityDeepLinkingActivity" android:exported="true">
     </activity>
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="\ 1513004885656399" />
-    <activity android:name="com.soomla.store.billing.google.GooglePlayIabService$IabActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
     <meta-data android:name="billing.service" android:value="google.GooglePlayIabService" />
+    <receiver android:name="com.amazon.device.iap.ResponseReceiver">
+      <intent-filter>
+        <action android:name="com.amazon.inapp.purchasing.NOTIFY" android:permission="com.amazon.inapp.purchasing.Permission.NOTIFY">
+        </action>
+      </intent-filter>
+    </receiver>
+    <activity android:name="com.soomla.store.billing.google.GooglePlayIabService$IabActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
   </application>
 </manifest>

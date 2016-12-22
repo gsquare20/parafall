@@ -17,6 +17,16 @@ public class InitState : IGameState {
 
 		myStateManager.optionsMenu.SetActive (false);
 
+		myStateManager.endMenu.SetActive (false);
+
+		myStateManager.gamePlayPanel.SetActive (false);
+
+		myStateManager.backgroundImage.SetActive (false);
+
+		myStateManager.menuBackgroundPanel.SetActive (true);
+
+		AdManager.Instance.showBannerAd ();
+
 		Time.timeScale = 0;
 	}
 }

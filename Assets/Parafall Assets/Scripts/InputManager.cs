@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour {
 
@@ -64,6 +65,7 @@ public class InputManager : MonoBehaviour {
 			foreach(GameObject tempGO in pooledGO){
 				if(tempGO.activeSelf == true && isPacketVisibleInCameraViewport(tempGO)){
 					GUIText childGuiTextObj = tempGO.transform.GetChild (0).guiText;
+					//Text childGuiTextObj = tempGO.transform.GetChild (0).GetChild (0).GetComponent<Text>();
 					//Debug.Log (childGuiTextObj.text);
 					//Debug.Log ("input string : " + inputString);
 					switch(ruleInAction){

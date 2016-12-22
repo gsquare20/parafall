@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -61,7 +62,9 @@ public class ParachuteSpawner : MonoBehaviour {
 		GameObject tempGO = parafallObjectPool.getObjectFromPool();
 		if (null != tempGO) {
 			tempGO.transform.position = myTransform.position;
+			//(tempGO.transform as RectTransform).anchoredPosition = myTransform.position;
 			tempGO.transform.rotation = myTransform.rotation;
+			//Text childGuiTextObj = tempGO.transform.GetChild (0).GetChild (0).GetComponent<Text>();
 			GUIText childGuiTextObj = tempGO.transform.GetChild (0).guiText;
 			float randomNum = Random.Range (0F, 1000F);
 			int randomInt = (int)randomNum;

@@ -85,4 +85,22 @@ public class Util : ScriptableObject
         Rect rect = new Rect (pos.x, pos.y, Screen.width, Screen.height);
         GUI.Label (rect, text, style);
     }
+
+	public static bool isNetworkConnectionAvailable(){
+		WWW www = new WWW ("http://www.google.com");
+		bool networkConnectionAvailable = false;
+
+		while (true) {
+			if(www.isDone && www.bytesDownloaded > 0){
+				networkConnectionAvailable = true;
+				break;
+			}
+
+			if(www.isDone && www.bytesDownloaded == 0){
+				break;
+			}
+		}
+
+		return networkConnectionAvailable;
+	}
 }

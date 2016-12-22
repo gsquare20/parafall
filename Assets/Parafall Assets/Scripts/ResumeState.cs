@@ -12,5 +12,8 @@ public class ResumeState : IGameState {
 	public void executeStateRelatedTasks(){
 		Time.timeScale = 1;
 		myStateManager.pauseMenu.SetActive (false);
+		myStateManager.gamePlayPanel.SetActive (true);
+		myStateManager.backgroundImage.SetActive (true);
+		myStateManager.menuBackgroundPanel.SetActive (false);
 	}
 }

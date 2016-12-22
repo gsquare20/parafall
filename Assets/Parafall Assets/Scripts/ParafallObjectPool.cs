@@ -21,6 +21,8 @@ public class ParafallObjectPool : MonoBehaviour {
 
 	public List<ParaPacket> listOfPackets;
 
+	public Transform paraPacketsPanelTransform;
+
 	private long objectsSpawnedFromPool = 1;
 
 	private static ParafallObjectPool instance;
@@ -54,6 +56,7 @@ public class ParafallObjectPool : MonoBehaviour {
 			int paraPacketInitialPoolSize = paraPacket.initialPoolSize;
 			for(int objectCounter=0; objectCounter<paraPacketInitialPoolSize; objectCounter++){
 				GameObject tempGO = (GameObject)Instantiate (paraPacket.paraGameObject);
+				//tempGO.transform.SetParent(paraPacketsPanelTransform);
 				tempGO.SetActive(false);
 				if(dictOfObjectsInPool.ContainsKey(paraPacket.paraName)){
 					dictOfObjectsInPool[paraPacket.paraName].Add(tempGO);
@@ -121,6 +124,7 @@ public class ParafallObjectPool : MonoBehaviour {
 		if(null == goToReturn && paraPacketToSpawn.growToFillObjectPool && dictOfObjectsInPool[paraPacketToSpawn.paraName].Count < paraPacketToSpawn.maxPoolSize)
 		{
 			GameObject tempGO = (GameObject)Instantiate (paraPacketToSpawn.paraGameObject);
+			//tempGO.transform.SetParent (paraPacketsPanelTransform);
 			tempGO.SetActive(false);
 			if(dictOfObjectsInPool.ContainsKey(paraPacketToSpawn.paraName)){
 				dictOfObjectsInPool[paraPacketToSpawn.paraName].Add(tempGO);

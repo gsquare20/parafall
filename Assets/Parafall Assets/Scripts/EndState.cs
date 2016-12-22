@@ -13,6 +13,9 @@ public class EndState : IGameState {
 		//TODO : Show End state menu showing final score, coins and social share options.
 		Time.timeScale = 0;
 		myStateManager.endMenu.SetActive (true);
+		myStateManager.gamePlayPanel.SetActive (false);
+		myStateManager.backgroundImage.SetActive (false);
+		myStateManager.menuBackgroundPanel.SetActive (true);
 		AdManager.Instance.showInterstitialAd ();
 	}
 }

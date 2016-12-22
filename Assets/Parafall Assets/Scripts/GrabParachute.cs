@@ -24,4 +24,11 @@ public class GrabParachute : MonoBehaviour {
 		parafallObjectPool.putObjectBackToPool(collision.gameObject);
 		gameData.setPlayerScore (gameData.getPlayerScore () + 1);
 	}
+
+	void OnCollisionExit2D(Collision2D collision) {
+		//Destroy(collision.gameObject);
+		//Transform collisionGOTransform = collision.gameObject.transform;
+		parafallObjectPool.putObjectBackToPool(collision.gameObject);
+		gameData.setPlayerScore (gameData.getPlayerScore () + 1);
+	}
 }

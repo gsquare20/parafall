@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime;
+using System.Runtime.InteropServices;
 
 public class FacebookAccessManager : MonoBehaviour {
 
@@ -58,7 +60,10 @@ public class FacebookAccessManager : MonoBehaviour {
 
 	private void loginToFB(){
 		//FBButtonText.text = "Connecting...";
-		FB.Login ("email,publish_actions", fbLoginCallback);
+		if(Util.isNetworkConnectionAvailable())
+			FB.Login ("email,publish_actions", fbLoginCallback);
+		else
+			playerController.showErrorPopUp ("No internet connection available!");
 	}
 
 	private void logoutFromFB(){
@@ -66,6 +71,7 @@ public class FacebookAccessManager : MonoBehaviour {
 		FBButtonText.text = "LOG IN TO FACEBOOK";
 		isFacebookLoginSuccessful = false;
 		//FBAvatarGO.SetActive (false);
+		FBAvatarGO.GetComponent<Image> ().sprite = null;
 		fbMaskPanelGO.SetActive (true);
 		Debug.Log ("User successfully logged out!");
 	}

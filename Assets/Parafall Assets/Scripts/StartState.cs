@@ -16,9 +16,12 @@ public class StartState : IGameState {
 	}
 
 	public void executeStateRelatedTasks(){
-		Time.timeScale = 1;
+		Time.timeScale = 1f;
 		myStateManager.mainMenu.SetActive (false);
 		myStateManager.endMenu.SetActive (false);
+		myStateManager.gamePlayPanel.SetActive (true);
+		myStateManager.backgroundImage.SetActive (true);
+		myStateManager.menuBackgroundPanel.SetActive (false);
 
 		IGameState lastState = myStateManager.getLastState ();
 		if (null != lastState && (lastState.GetType() == typeof(InitState))) {

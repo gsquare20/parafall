@@ -18,6 +18,12 @@ public class StateManager : MonoBehaviour {
 
 	public GameObject optionsMenu;
 
+	public GameObject gamePlayPanel;
+
+	public GameObject backgroundImage;
+
+	public GameObject menuBackgroundPanel;
+
 	private Dictionary<int, IGameState> gameStatesDict = new Dictionary<int, IGameState>();
 
 	public delegate void StartSpawningParaPacketsAction ();
@@ -29,14 +35,19 @@ public class StateManager : MonoBehaviour {
 	public delegate void EndStateAction ();
 	public static event EndStateAction endStateEvent;
 
+	public delegate void HidePopUpAction ();
+	public static event HidePopUpAction hidePopUpEvent;
+
 	public enum GameStateEnum {
+		FirstInitState,
 		InitState,
 		StartState,
 		PauseState,
 		ResumeState,
 		OptionsMenuState,
 		EndState,
-		ExitState
+		ExitState,
+		PopUpState
 	}
 
 	void Awake(){
@@ -47,16 +58,31 @@ public class StateManager : MonoBehaviour {
 
 	}
 
+	public static StateManager Instance {
+		get{
+			if(null == instance){
+				instance = GameObject.Find ("GameManager").GetComponent<StateManager>();
+			}
+			
+			return instance;
+		}
+	}
+
 	void OnEnable(){
-		GameData.playerHealthChangeEvent += moveToEndStateBasedOnPlayerHealth;	
+		GameData.playerHealthChangeEvent += moveToEndStateBasedOnPlayerHealth;
+		PlayerController.showPopUpEvent += changeGameStateOnShowPopUp;
+		PlayerController.liveAgainPowerUpNotUsedEvent += endGame;
 	}
 
 	void OnDisable() {
 		GameData.playerHealthChangeEvent -= moveToEndStateBasedOnPlayerHealth;
+		PlayerController.showPopUpEvent -= changeGameStateOnShowPopUp;
+		PlayerController.liveAgainPowerUpNotUsedEvent -= endGame;
 	}
 
 	// Use this for initialization
 	void Start () {
+		gameStatesDict.Add ((int)GameStateEnum.FirstInitState, new FirstInitState (this));
 		gameStatesDict.Add ((int)GameStateEnum.InitState, new InitState (this));
 		gameStatesDict.Add ((int)GameStateEnum.StartState, new StartState (this));
 		gameStatesDict.Add ((int)GameStateEnum.PauseState, new PauseState (this));
@@ -64,10 +90,15 @@ public class StateManager : MonoBehaviour {
 		gameStatesDict.Add ((int)GameStateEnum.OptionsMenuState, new OptionsMenuState (this));
 		gameStatesDict.Add ((int)GameStateEnum.EndState, new EndState (this));
 		gameStatesDict.Add ((int)GameStateEnum.ExitState, new ExitState (this));
+		gameStatesDict.Add ((int)GameStateEnum.PopUpState, new PopUpState (this));
 
 		Time.timeScale = 0;
 		mainMenu.SetActive (true);
 		pauseMenu.SetActive (false);
+		gamePlayPanel.SetActive (false);
+		backgroundImage.SetActive (false);
+		menuBackgroundPanel.SetActive (true);
+
 	}
 	
 	// Update is called once per frame
@@ -75,36 +106,59 @@ public class StateManager : MonoBehaviour {
 		//if(null != activeState)
 		//	activeState.executeStateRelatedTasks();
 		if (Input.GetKeyDown (KeyCode.Escape)) {
-			System.Type currentStateType = activeState.GetType();
+			System.Type currentStateType = typeof(InitState);
+			System.Type lastStateType = typeof(InitState);
+
+			if(null != activeState)
+				currentStateType = activeState.GetType();
+
+			if(null != lastState)
+				lastStateType = lastState.GetType ();
+
 			if(currentStateType == typeof(StartState) || currentStateType == typeof(ResumeState)){
 				pauseGame();
 			}
+
 			if(currentStateType == typeof(PauseState)){
 				resumeGame();
 			}
+
 			if(currentStateType == typeof(InitState)){
 				Application.Quit();	
 			}
-			if(currentStateType == typeof(OptionsMenuState)){
+
+			if(currentStateType == typeof(OptionsMenuState) && lastStateType == typeof(PauseState)){
+				pauseGame();
+			}
+			else if (currentStateType == typeof(OptionsMenuState)){
 				goBackToMainMenu();	
+			}
+
+			if(currentStateType == typeof(PopUpState) && lastStateType == typeof(PauseState)){
+				pauseGame();
+				hidePopUpEvent();
+			}
+			else if (currentStateType == typeof(PopUpState) && (lastStateType != typeof(StartState) && lastStateType != typeof(ResumeState))){
+				goBackToMainMenu();
+				hidePopUpEvent();
 			}
 		}
 	}
 
 	public void switchState(IGameState newState){
+		AdManager.Instance.hideBannerAd ();
+		setLastState ();
 		activeState = newState;
 		activeState.executeStateRelatedTasks ();
 	}
 
 	public void playGame(){
-		setLastState ();
 		//switchState (new StartState (this));
 		switchState (getGameState(GameStateEnum.StartState));
 		startSpawningParaPacketsEvent ();
 	}
 
 	public void pauseGame(){
-		setLastState ();
 		//switchState (new PauseState (this));
 		switchState (getGameState(GameStateEnum.PauseState));
 	}
@@ -112,24 +166,20 @@ public class StateManager : MonoBehaviour {
 	public void endGame(){
 		endStateEvent ();
 
-		setLastState ();
 		switchState (getGameState (GameStateEnum.EndState));
 	}
 
 	public void exitGame(){
-		setLastState ();
 		//switchState (new ExitState (this));
 		switchState (getGameState(GameStateEnum.ExitState));
 	}
 
 	public void openOptionsMenu() {
-		setLastState ();
 		//switchState (new OptionsMenuState (this));
 		switchState (getGameState(GameStateEnum.OptionsMenuState));
 	}
 
 	public void resumeGame() {
-		setLastState ();
 		//switchState (new ResumeState (this));
 		switchState (getGameState(GameStateEnum.ResumeState));
 	}
@@ -137,9 +187,21 @@ public class StateManager : MonoBehaviour {
 	public void goBackToMainMenu() {
 		initStateEvent ();
 
-		setLastState ();
 		//switchState (new InitState (this));
 		switchState (getGameState(GameStateEnum.InitState));
+	}
+
+	public void goBackFromOptionsMenu(){
+		if(lastState != null){
+			System.Type lastStateType = lastState.GetType ();
+			if(lastStateType == typeof(PauseState)){
+				pauseGame();
+			}else{
+				goBackToMainMenu();
+				}
+		}else{
+			goBackToMainMenu();
+		}
 	}
 
 	private void setLastState(){
@@ -157,7 +219,11 @@ public class StateManager : MonoBehaviour {
 
 	void moveToEndStateBasedOnPlayerHealth(float playerHealth){
 		if (playerHealth == 0f) {
-			endGame ();		
+			//endGame ();		
 		}
+	}
+
+	void changeGameStateOnShowPopUp(){
+		switchState (getGameState(GameStateEnum.PopUpState));
 	}
 }
